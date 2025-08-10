@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Userstorage } from '../../../auth/service/storage/userstorage';
 import { DemandeResponseDto } from '../../demandes-response/demandes-response-module';
+import { appSettings } from '../../../../environments/app-settings';
 
-const BASIC_URL = "http://localhost:8080/api/client/";
+const BASIC_URL = appSettings.apiUrl + '/client/';
+ // <-- utilise apiUrl dynamique
 
 @Injectable({
   providedIn: 'root'

@@ -2,8 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Userstorage } from '../../../auth/service/storage/userstorage';
+import { appSettings } from '../../../../environments/app-settings';
 
-const BASIC_URL = "http://localhost:8080/api/tech/";
+const BASIC_URL = appSettings.apiUrl + '/tech/';  // <-- utilise apiUrl dynamique
 
 
 @Injectable({

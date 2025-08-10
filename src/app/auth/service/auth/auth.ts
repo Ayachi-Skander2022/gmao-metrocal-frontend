@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { appSettings } from '../../../../environments/app-settings';
 
-const BASIC_URL = "http://localhost:8080/";
+const BASIC_URL = appSettings.apiUrl;
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +14,18 @@ export class Auth {
   
   registerC(sigupRequest: any): Observable<any> {
 
-    return this.http.post(`${BASIC_URL}api/auth/signupClient`, sigupRequest);
+    return this.http.post(`${BASIC_URL}/auth/signupClient`, sigupRequest);
   }
 
   registerI(sigupRequest: any): Observable<any> {
 
-     return this.http.post(`${BASIC_URL}api/auth/signupTech`, sigupRequest);
+     return this.http.post(`${BASIC_URL}/auth/signupTech`, sigupRequest);
   }
 
   login(loginRequest: any): Observable<any> {
-    return this.http.post(`${BASIC_URL}api/auth/login`, loginRequest);
+    return this.http.post(`${BASIC_URL}/auth/login`, loginRequest);
   }
 
+
+  
 }

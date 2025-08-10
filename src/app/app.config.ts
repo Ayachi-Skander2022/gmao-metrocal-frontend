@@ -55,7 +55,9 @@ import {
   UploadOutline,
 } from '@ant-design/icons-angular/icons';
 
-export const appConfig: ApplicationConfig = {
+export const appConfig : ApplicationConfig = {
+
+
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),

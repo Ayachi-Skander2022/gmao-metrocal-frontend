@@ -5,10 +5,12 @@ import { Userstorage } from '../../../auth/service/storage/userstorage';
 // @ts-ignore
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { DemandeResponseDto } from '../../demandes-response/demandes-response-module';
+import { appConfig } from '../../../app.config';
+import { appSettings } from '../../../../environments/app-settings';
 
 
 
-const BASIC_URL = "http://localhost:8080/api/admin/";
+const BASIC_URL = appSettings.apiUrl + '/admin/';  // <-- utilise apiUrl dynamique
 
 
 export interface DashboardStats {
