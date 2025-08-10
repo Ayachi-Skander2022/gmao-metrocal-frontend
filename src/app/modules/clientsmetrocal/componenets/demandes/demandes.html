@@ -1,0 +1,189 @@
+<ng-template #modalTitleTemplate>
+  <div class="modal-title-custom">
+    <i nz-icon nzType="plus-circle" class="icon-title"></i>
+    Ajouter une Demande d'Étalonnage
+  </div>
+</ng-template>
+
+<ng-template #modalContentTemplate>
+  <form [formGroup]="demandeForm" (ngSubmit)="submitForm()" nz-form class="modern-form">
+
+    <!-- 🎯 Sélection Instrument -->
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Veuillez sélectionner un instrument">
+        <nz-select formControlName="instrumentId" nzPlaceHolder="Sélectionner un instrument">
+          <nz-option
+            *ngFor="let i of instruments"
+            [nzValue]="i.id"
+            [nzLabel]="i.nomInstrument + ' - ' + i.referenceInstrument">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Type d’étalonnage -->
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Veuillez sélectionner le type d'étalonnage">
+        <nz-select formControlName="typeEtalonnage" nzPlaceHolder="Type d'étalonnage">
+          <nz-option *ngFor="let type of typesEtalonnage" [nzValue]="type" [nzLabel]="type"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Date souhaitée -->
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Veuillez sélectionner la date">
+        <nz-date-picker
+          formControlName="dateSouhaitee"
+          style="width: 100%;"
+          nzPlaceholder="Date souhaitée">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Boutons -->
+    <div style="text-align: right; margin-top: 16px;">
+      <button
+        nz-button
+        nzType="default"
+        nzShape="round"
+        class="cancel-button"
+        (click)="modalRef?.close()">
+        <i nz-icon nzType="close"></i>
+        Annuler
+      </button>
+
+      <button
+        nz-button
+        nzType="primary"
+        nzShape="round"
+        class="modern-button"
+        htmlType="submit"
+        [disabled]="demandeForm.invalid"
+        
+        style="margin-left: 8px;">
+        <i nz-icon nzType="plus-circle" style="margin-right: 6px;"></i>
+        Ajouter
+      </button>
+    </div>
+
+  </form>
+</ng-template>
+
+
+
+
+<div style="border-bottom: 2px solid #0a1c42; padding-bottom: 6px; margin-bottom: 16px;">
+  <h2 style="margin-top: 1rem; font-size: 20px; font-weight: 600; color: #0a1c42; display: flex; text-transform: uppercase; align-items: center; gap: 20px;">
+    <i nz-icon nzType="container" nzTheme="outline"></i>
+    Liste des demandes d'étalonnage
+  </h2>
+</div>
+
+<button
+  class="modern-button mb-3"
+  nz-button
+  nzType="primary"
+  nzShape="round"
+  (click)="openModal()"
+>
+  Envoyer une demande
+  <i nz-icon nzType="send" nzTheme="outline" style="margin-left: 8px;"></i>
+</button>
+
+
+<br>
+
+
+<nz-input-group [nzSuffix]="suffixIcon" nzSearch class="modern-search">
+  <input
+    type="text"
+    nz-input
+    placeholder="🔍 Rechercher un instrument..."
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearch()"
+    class="search-input"
+  />
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+</nz-input-group>
+
+<br /><br />
+
+<nz-table
+  #nzTable
+  [nzData]="filteredDemandes"
+  [nzPageSize]="4"
+  [nzFrontPagination]="true"
+  [nzLoading]="loading"
+  [nzShowPagination]="true"
+  [nzShowSizeChanger]="true"
+  [nzShowQuickJumper]="true"
+  [nzScroll]="{ x: '1000px' }"
+  class="modern-table"
+>
+  <thead>
+    <tr>
+      <th>Code Instrument</th>
+      <th>Nom Instrument</th>
+      <th>Référence</th>
+      <th>Constructeur</th>
+      <th>Type Mesure</th>
+       <th>Mesure (Min - Max)</th>
+      <th>Type Étalonnage</th>
+      <th>Date Souhaitee</th>
+      <th>Date Demande</th>
+
+        <th>Statut Etalonnage</th>
+
+       <th>Statut Demande</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let d of nzTable.data">
+       <td>{{ d.instrument?.codeInstrument }}</td>
+      <td>{{ d.instrument?.nomInstrument }}</td>
+      <td>{{ d.instrument?.referenceInstrument }}</td>
+      <td>{{ d.instrument?.constructeur }}</td>
+    <td>{{ d.instrument?.typeMesure }} - {{ d.instrument?.uniteMesure }}</td>
+    <td>{{ d.instrument?.minMesure }} - {{ d.instrument?.maxMesure }}</td>
+      <td>{{ d.typeEtalonnage }}</td>
+      <td> {{ d.dateSouhaitee | date: 'shortDate' }} </td>
+      <td>{{ d.dateDemande | date: 'shortDate' }}</td>
+   
+     
+     <!-- État Étalonnage -->
+      <td>
+        <ng-container *ngIf="d.statutDemande !== 'REJECTED'">
+          <nz-tag *ngIf="d.statutEtalonnage === 'EN_ATTENTE'" nzColor="processing">
+            <span nz-icon nzType="sync" nzSpin></span> En attente
+          </nz-tag>
+          <nz-tag *ngIf="d.statutEtalonnage === 'EN_COURS'" nzColor="blue">
+            <span nz-icon nzType="loading" nzSpin></span> En cours
+          </nz-tag>
+          <nz-tag *ngIf="d.statutEtalonnage === 'ETALONNE'" nzColor="success">
+            <span nz-icon nzType="check-circle"></span> Terminé
+          </nz-tag>
+        </ng-container>
+         <ng-container *ngIf="d.statutDemande === 'REJECTED'">
+            <span style="color: #999; font-style: italic;">Demande rejetée</span>
+       </ng-container>
+      </td>
+
+      <!-- État Demande -->
+      <td>
+        <nz-tag *ngIf="d.statutDemande === 'PENDING'" nzColor="processing">
+          <span nz-icon nzType="sync" nzSpin></span> En attente
+        </nz-tag>
+        <nz-tag *ngIf="d.statutDemande === 'APPROVED'" nzColor="green">
+          <span nz-icon nzType="check-circle"></span> Approuvée
+        </nz-tag>
+        <nz-tag *ngIf="d.statutDemande === 'REJECTED'" nzColor="error">
+          <span nz-icon nzType="close-circle"></span> Rejetée
+        </nz-tag>
+      </td>
+
+    </tr>
+  </tbody>
+</nz-table>

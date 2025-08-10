@@ -1,0 +1,153 @@
+<ng-template #modalTitleTemplate>
+  <div class="modal-title-custom">
+    <i nz-icon nzType="plus-circle" class="icon-title"></i>
+    Ajouter un Instrument
+  </div>
+</ng-template>
+
+<ng-template #modalContentTemplate>
+  <form [formGroup]="instrumentForm" nz-form class="modern-form">
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Veuillez saisir le nom de l'instrument">
+        <nz-input-group nzPrefixIcon="tool">
+          <input nz-input formControlName="nomInstrument" placeholder="Nom de l'instrument" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Veuillez saisir la référence">
+        <nz-input-group nzPrefixIcon="number">
+          <input nz-input formControlName="referenceInstrument" placeholder="Référence" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Veuillez saisir le constructeur">
+        <nz-input-group nzPrefixIcon="apartment">
+          <input nz-input formControlName="constructeur" placeholder="Constructeur" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Veuillez sélectionner le type de mesure">
+        <nz-select formControlName="typeMesure" nzPlaceHolder="Type de mesure">
+          @for (type of typesMesure; track type) {
+            <nz-option [nzValue]="type" [nzLabel]="type"></nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Veuillez sélectionner l’unité de mesure">
+        <nz-select formControlName="uniteMesure" nzPlaceHolder="Unité de mesure">
+          @for (type of uniteMesure; track type) {
+            <nz-option [nzValue]="type" [nzLabel]="type"></nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Veuillez saisir la valeur maximale">
+        <nz-input-group nzPrefixIcon="arrow-up">
+          <input nz-input formControlName="maxMesure" placeholder="Valeur maximale" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Veuillez saisir la valeur minimale">
+        <nz-input-group nzPrefixIcon="arrow-down">
+          <input nz-input formControlName="minMesure" placeholder="Valeur minimale" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <div style="text-align: right; margin-top: 16px;">
+      <button nz-button nzType="default" nzShape="round" class="cancel-button"
+              (click)="modalRef?.close()">
+        <i nz-icon nzType="close"></i>
+        Annuler
+      </button>
+
+      <button nz-button nzType="primary" nzShape="round" class="modern-button"
+              htmlType="submit" [disabled]="instrumentForm.invalid"
+              (click)="submitForm()" style="margin-left: 8px;">
+        <i nz-icon nzType="plus-circle" style="margin-right: 6px;"></i>
+        Ajouter
+      </button>
+    </div>
+
+  </form>
+</ng-template>
+
+<div style="border-bottom: 2px solid #0a1c42; padding-bottom: 6px; margin-bottom: 16px;">
+  <h2 style="margin-top: 1rem; font-size: 20px; font-weight: 600; color: #0a1c42; display: flex; text-transform: uppercase; align-items: center; gap: 20px;">
+    <i nz-icon nzType="container" nzTheme="outline"></i>
+    Liste des Instruments
+  </h2>
+</div>
+
+<button class="modern-button mb-3" nz-button nzType="primary" nzShape="round" (click)="openModal()">
+  Ajouter Un Instrument
+  <i nz-icon nzType="send" nzTheme="outline" style="margin-left: 8px;"></i>
+</button>
+
+<br>
+<nz-input-group [nzSuffix]="suffixIcon" nzSearch class="modern-search">
+  <input
+    type="text"
+    nz-input
+    placeholder="🔍 Rechercher un instrument..."
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearch()"
+    class="search-input"
+  />
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+</nz-input-group>
+
+
+<br /><br />
+
+<nz-table #nzTable [nzData]="filteredInstruments" [nzPageSize]="5"
+          [nzFrontPagination]="true" [nzLoading]="loading"
+          [nzShowPagination]="true" [nzShowSizeChanger]="true"
+          [nzShowQuickJumper]="true" [nzScroll]="{ x: '1000px' }"
+          class="modern-table">
+  <thead>
+    <tr>
+      <th>Code Instrument</th>
+      <th>Instrument</th>
+      <th>Référence</th>
+      <th>Constructeur</th>
+      <th>Type Mesure</th>
+      <th>Mesure (Min | Max)</th>
+      <th>Statut Étalonnage</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (i of nzTable.data; track i.codeInstrument) {
+      <tr>
+        <td>{{ i.codeInstrument }}</td>
+        <td>{{ i.nomInstrument }}</td>
+        <td>{{ i.referenceInstrument }}</td>
+        <td>{{ i.constructeur }}</td>
+        <td>{{ i.typeMesure }} - {{ i.uniteMesure }}</td>
+        <td>{{ i.minMesure }} | {{ i.maxMesure }}</td>
+        <td>
+          <nz-tag nzColor="processing">
+            <span nz-icon nzType="sync" nzSpin></span> En attente
+          </nz-tag>
+        </td>
+      </tr>
+    }
+  </tbody>
+</nz-table>

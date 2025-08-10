@@ -1,0 +1,51 @@
+<div class="login-wrapper">
+  <div class="form-card">
+    <h2 class="form-title">Enregistrement du personnel</h2>
+    <form [formGroup]="registerIntervenant" (ngSubmit)="submitForm()" nz-form class="custom-form">
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Veuillez saisir le nom complet">
+          <nz-input-group nzPrefixIcon="user">
+            <input type="text" nz-input formControlName="fullName" placeholder="Nom complet" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Veuillez saisir l'email">
+          <nz-input-group nzPrefixIcon="mail">
+            <input type="email" nz-input formControlName="email" placeholder="Adresse email" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Veuillez saisir l'adresse">
+          <nz-input-group nzPrefixIcon="home">
+            <input type="text" nz-input formControlName="adresse" placeholder="Adresse" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Veuillez saisir le numéro de téléphone">
+          <nz-input-group nzPrefixIcon="phone">
+            <input type="number" nz-input formControlName="telephone" placeholder="Numéro de téléphone" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Veuillez saisir le mot de passe">
+          <nz-input-group nzPrefixIcon="lock">
+            <input type="password" nz-input formControlName="password" placeholder="Mot de passe" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <button nz-button nzType="primary" nzBlock [disabled]="registerIntervenant.invalid" class="submit-button">
+        Enregistrer
+      </button>
+    </form>
+  </div>
+</div>

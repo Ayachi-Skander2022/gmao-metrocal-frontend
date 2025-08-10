@@ -1,0 +1,140 @@
+// ---------- VARIABLES ----------
+$primary-color: #1890ff;
+$background-dark: #0d1a26;
+$text-light: #eff2f5;
+$menu-hover: #173d57;
+$transition: all 0.3s ease;
+
+// ---------- SIDER GLOBAL ----------
+.custom-sider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+
+  .sider-content {
+    display: flex;
+    flex-direction: column;
+    align-items:stretch;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+// ---------- LOGO ----------
+.logo {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: $text-light;
+  background: none;
+  border-bottom: 1px solid #91d5ff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.logo.collapsed-logo {
+  font-size: 0;
+  height: 50px;
+  justify-content: center;
+  padding: 0;
+}
+
+.logo.collapsed-logo::before {
+  content: "🚀";
+  font-size: 22px;
+  color: #fff;
+}
+
+// ---------- MENU ----------
+ul[nz-menu] {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  background-color: $background-dark;
+  border: none;
+}
+
+li[nz-menu-item] {
+  display: flex !important;
+  align-items: center;
+  color: #ccc;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 4px 8px;
+  transition: $transition;
+  font-weight: 500;
+  font-size: 14px;
+
+  &:hover {
+    background-color: $menu-hover;
+    color: $text-light;
+  }
+
+  &.ant-menu-item-selected {
+    background-color: $primary-color;
+    color: white;
+  }
+}
+
+li[nz-menu-item] span[nz-icon] {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+li[nz-menu-item] span:not([nz-icon]) {
+  white-space: nowrap;
+}
+
+// ---------- COLLAPSED ----------
+.collapsed-sider {
+  li[nz-menu-item] {
+    justify-content: center !important;
+
+    span[nz-icon] {
+      margin-right: 0 !important;
+    }
+
+    span:not([nz-icon]) {
+      display: none;
+    }
+  }
+
+  .logo {
+    font-size: 0;
+    &::before {
+      content: "⚙️";
+      margin-left: 9px;
+      font-size: 24px;
+    }
+  }
+}
+
+// ---------- CONTENU ----------
+.inner-content {
+  padding: 30px;
+  background: #ffffff;
+  min-height: 300px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: $transition;
+}
+
+
+
+nz-footer {
+  text-align: center;
+  padding: 12px;
+  font-size: 13px;
+  position: fixed;
+  right: 0;
+  color: #888;
+  background: #f0f2f5;
+  border-top: 1px solid #e8e8e8;
+}

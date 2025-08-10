@@ -1,0 +1,118 @@
+:host {
+  display: block;
+  padding: 0.5rem;
+
+
+
+  nz-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out;
+    padding: 0.5rem 0;
+    text-align: center;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+
+    p {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0.25rem 0;
+    }
+  }
+
+ 
+
+::ng-deep .ant-card-head-title {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #0a1c42;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+
+
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .table-card {
+
+    nz-table {
+      border-radius: 6px;
+      overflow: hidden;
+
+      th {
+        background-color: #f8fafc;
+        color: #334155;
+        font-weight: 600;
+        font-size: 0.8rem;
+        padding: 6px;
+      }
+
+      td {
+        font-size: 0.75rem;
+        color: #475569;
+        padding: 6px;
+      }
+
+   
+    }
+  }
+
+  .chart-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    .table-half,
+    .chart-half {
+      flex: 1 1 48%;
+      max-width: 55%;
+      min-width: 400px;
+    }
+
+  
+  }
+}
+
+
+
+
+.card-bg-total {
+  background-color: #e0f2fe; // bleu clair
+}
+
+.card-bg-attente {
+  background-color: #fef3c7; // orange pâle
+
+}
+
+.card-bg-non-affectee {
+  background-color: #ede9fe; // violet clair
+
+}
+
+.card-bg-retard {
+  background-color: #fee2e2; // rouge pâle
+
+}
+
+.card-bg-clients {
+  background-color: #d1fae5; // vert pâle
+
+}
+
+
+
+
+

@@ -1,0 +1,288 @@
+
+// === Couleurs principales ===
+$primary-blue: #0a1c42;
+$secondary: #f5f7fa;
+$success: #52c41a;
+$warning: #faad14;
+$error: #ff4d4f;
+$secondary-blue: #3a7bd5;
+$medium-gray: #e9ecef;
+$dark-gray: #495057;
+
+
+
+
+
+::ng-deep .modern-table {
+  .ant-pagination {
+    display: flex;
+    position: relative;
+    justify-content: right;
+    margin-top: 16px;
+    padding: 12px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+
+
+  .ant-pagination-item {
+      border: none;
+      background-color: white;
+      color: #d6dae4;
+      font-weight: 500;
+      margin: 0 4px;
+      border-radius: 6px;
+
+      transition: all 0.3s;
+
+      &:hover {
+        background-color: #e6f7ff;
+        color: #ced2d6;
+      }
+
+      &-active {
+        background-color: #59ecf1;
+        color: white;
+        border: none;
+        
+        font-weight: 600;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+    }
+    .ant-pagination-prev,
+    .ant-pagination-next {
+      .ant-pagination-item-link {
+        background-color: white;
+        border: none;
+        border-radius: 6px;
+        color: #0a1c42;
+        font-size: 16px;
+        transition: all 0.3s;
+
+        &:hover {
+          background-color: #e6f7ff;
+          color: #1890ff;
+        }
+      }
+    }
+
+    .ant-pagination-options {
+      margin-left: 16px;
+
+      .ant-select-selector {
+        border-radius: 6px;
+        border-color: #d9d9d9;
+        transition: border 0.3s;
+
+        &:hover {
+          border-color: #1890ff;
+        }
+      }
+
+      .ant-select-arrow {
+        color: #1890ff;
+      }
+    }
+  }
+}
+
+
+::ng-deep .modern-table {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+::ng-deep .modern-table th {
+  background-color: #f5f7fa;
+  color: #0a1c42;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 12px;
+  border-right: 1px solid #e0e0e0;
+  text-transform: uppercase;
+}
+
+::ng-deep .modern-table th:last-child,
+::ng-deep .modern-table td:last-child {
+  border-right: none;
+}
+
+::ng-deep .modern-table td {
+  font-size: 13px;
+  padding: 12px;
+  vertical-align: middle;
+  border-right: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f2f2f2;
+  background-color: #fff;
+}
+
+::ng-deep .modern-table tr:hover td {
+  background-color: #f9fbfd;
+}
+
+::ng-deep .user-inline {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+}
+
+::ng-deep .icon-action {
+  cursor: pointer;
+  font-size: 20px;
+  margin-right: 10px;
+  transition: transform 0.2s ease-in-out;
+}
+
+::ng-deep .icon-action:hover {
+  transform: scale(1.15);
+}
+
+::ng-deep .action-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+::ng-deep .ant-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  border-radius: 12px;
+  padding: 2px 10px;
+}
+
+
+nz-table {
+  th {
+    background-color: #0a1c42; // bleu foncé
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border-right: 1px solid #ddd;
+  }
+
+  td {
+    border-right: 1px solid #f0f0f0;
+    text-align: center;
+  }
+
+  tr th:last-child,
+  tr td:last-child {
+    border-right: none;
+  }
+
+  tr {
+    border-bottom: 1px solid #eee;
+  }
+}
+
+
+
+
+::ng-deep .modern-search {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+
+  .search-input {
+    padding: 12px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    background: #f3f4f6;  /* gris clair très doux */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+
+    &:focus {
+      background: #fff;
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.3); /* bleu doux */
+    }
+  }
+
+  i[nz-icon] {
+    color: #9ca3af; /* gris icône */
+    transition: color 0.3s ease;
+  }
+
+  .search-input:focus + i[nz-icon] {
+    color: #2563eb; /* bleu icône au focus */
+  }
+}
+
+
+
+ 
+
+
+::ng-deep .modern-button {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 15px;
+  background: linear-gradient(to right, #1890ff, #40a9ff);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+::ng-deep .modern-button:hover {
+  background: linear-gradient(to right, #40a9ff, #69c0ff);
+  transform: scale(1.03);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+::ng-deep .cancel-button {
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .cancel-button:hover {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+::ng-deep .ant-modal-close-x {
+  font-size: 20px; /* Taille plus grande */
+  color: #e4e1e1 !important; 
+}
+
+
+
+
+
+::ng-deep .ant-modal-header {
+  background-color: #0a1c42;
+  padding: 16px;
+ 
+}
+
+::ng-deep .modal-title-custom {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #dde0e7;
+}
+
+::ng-deep .icon-title {
+  font-size: 22px;
+  color: #dde1e9;
+}
+
+
+// === Badge Statut Étape ===
+nz-tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  font-weight: 500;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}

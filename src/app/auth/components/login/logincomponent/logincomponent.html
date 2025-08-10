@@ -1,0 +1,50 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2 class="login-title">🔐 Connexion</h2>
+
+    <form nz-form [formGroup]="loginForm" (ngSubmit)="logForm()" class="login-form">
+
+
+        <nz-form-item>
+  <nz-form-control [nzErrorTip]="emailErrorTpl">
+    <nz-input-group nzPrefixIcon="mail">
+      <input type="email" nz-input formControlName="email" placeholder="Adresse e-mail" />
+    </nz-input-group>
+  </nz-form-control>
+</nz-form-item>
+<ng-template #emailErrorTpl>
+  <span class="custom-error">
+    <i nz-icon nzType="exclamation-circle" class="error-icon"></i>
+    Veuillez entrer votre adresse e-mail
+  </span>
+</ng-template>
+
+<nz-form-item>
+  <nz-form-control [nzErrorTip]="passwordErrorTpl">
+    <nz-input-group nzPrefixIcon="lock">
+      <input type="password" nz-input formControlName="password" placeholder="Mot de passe" />
+    </nz-input-group>
+  </nz-form-control>
+</nz-form-item>
+<ng-template #passwordErrorTpl>
+  <span class="custom-error">
+    <i nz-icon nzType="warning" class="error-icon"></i>
+    Mot de passe requis
+  </span>
+</ng-template>
+
+      
+     
+
+      <button
+        nz-button
+        nzType="primary"
+        nzBlock
+        [disabled]="loginForm.invalid"
+        class="login-button"
+      >
+        Se connecter
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,123 @@
+<!-- Titre -->
+<div class="table-title">
+  <h2>
+    <i nz-icon nzType="container" nzTheme="outline"></i>
+    Liste des Interventions
+  </h2>
+</div>
+
+<!-- Barre de recherche -->
+<nz-input-group [nzSuffix]="suffixIcon" nzSearch class="modern-search">
+  <input
+    type="text"
+    nz-input
+    placeholder="🔍 Rechercher un instrument..."
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearch()"
+    class="search-input"
+  />
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+</nz-input-group>
+
+<br /><br />
+
+<!-- Tableau stylisé -->
+<nz-table
+  class="modern-table"
+  #expandTable
+  [nzData]="pagedInterventions"
+  [nzPageSize]="pageSize"
+  [nzFrontPagination]="false" 
+  [nzBordered]="true"
+  [nzLoading]="loading"
+  [nzShowPagination]="false"
+  [nzScroll]="{ x: '1000px' }"
+>
+  <thead>
+    <tr>
+      <th>Mesures / Instrument</th>
+      <th>Client</th>
+      <th>Étalon Utilisé</th>
+      <th>Durée</th>
+      <th>Date</th>
+      <th>Technicien</th>
+      <th>Statut</th>
+      <th>Certificat</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (intervention of pagedInterventions; track intervention.id) {
+      @for (item of Intervention[intervention.id]; track item) {
+        @if (!item.parent || item.parent.expand) {
+          <tr>
+            <td
+              [nzIndentSize]="item.level! * 20"
+              [nzShowExpand]="!!item.children?.length"
+              [(nzExpand)]="item.expand"
+              (nzExpandChange)="collapse(Intervention[intervention.id], item, $event)"
+              class="no-indent"
+            >
+              @if (!item.parent) {
+                {{ item.instrument.nomInstrument }}
+              }
+              @if (item.parent) {
+                <div class="mesures-inline">
+                  @for (mesure of item.mesures; track $index) {
+                    <span class="mesure-group">
+                      <span class="badge instrument">Inst: {{ mesure.valeurInstrument }}</span>
+                      <span class="badge etalon">Étalon: {{ mesure.valeurEtalon }}</span>
+                      <span class="badge ecart">Écart: {{ mesure.ecart }}</span>
+                    </span>
+                    @if ($index < item.mesures.length - 1) {
+                      <span class="separator">|</span>
+                    }
+                  }
+                </div>
+              }
+            </td>
+
+            <td>{{ item.demande?.client?.fullName }}</td>
+            <td>{{ item.etalonUtilise || '-' }}</td>
+            <td>{{ item.dureeEtalonnage || '-' }}</td>
+            <td>{{ item.dateIntervention || '-' }}</td>
+            <td>{{ item.technicien.fullName }}</td>
+
+            <td>
+              @if (item.demande?.statutEtalonnage === 'ETALONNE') {
+                <nz-tag nzColor="success" class="tag-stat">
+                  <i nz-icon nzType="check-circle"></i>&nbsp;Terminé
+                </nz-tag>
+              }
+            </td>
+            <td>
+       <button nz-button nzType="primary" class="btn-download" (click)="onDownloadCertificate(+item.id)">
+           <i nz-icon nzType="download"></i> Télécharger
+       </button>
+         </td>
+
+          </tr>
+        }
+      }
+    }
+  </tbody>
+</nz-table>
+
+<!-- Pagination séparée -->
+<nz-pagination
+  [nzPageIndex]="pageIndex"
+  [nzPageSize]="pageSize"
+  [nzTotal]="filteredInterventions.length"
+  (nzPageIndexChange)="onPageChange($event)"
+  [nzShowQuickJumper]="true"
+  [nzShowSizeChanger]="false"
+></nz-pagination>
+
+
+
+
+
+
+

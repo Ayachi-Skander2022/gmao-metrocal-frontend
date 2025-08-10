@@ -1,0 +1,53 @@
+<nz-layout>
+  <!-- SIDEBAR -->
+<nz-sider 
+  nzCollapsible 
+  [(nzCollapsed)]="isCollapsed"
+  nzWidth="200px" 
+  [nzBreakpoint]="'lg'" 
+  [nzCollapsedWidth]="80"
+  class="custom-sider"
+  [ngClass]="{ 'collapsed-sider': isCollapsed }"
+>
+
+  <div class="sider-content">
+    <div class="logo" [class.collapsed-logo]="isCollapsed">GMAO-SKA</div>
+
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <ng-container *ngFor="let item of navItems$ | async">
+        <li nz-menu-item
+            *ngIf="!item.action"
+            [routerLink]="item.link"
+            routerLinkActive="active"
+            [ngClass]="{ 'active': item.label === 'Demandes' }">
+          <span nz-icon [nzType]="item.icon" class="mr-2"></span>
+          <span class="nav-label">{{ item.label }}</span>
+
+          <!-- Badges -->
+          <nz-badge *ngIf="item.label === 'Demandes'" [nzCount]="adminNotification()" nzSize="small" [nzOffset]="[10, 0]"></nz-badge>
+          <nz-badge *ngIf="item.label === 'InterventionsT'" [nzCount]="technicienNotifCount()" nzSize="small" [nzOffset]="[10, 0]">
+            <div>{{ technicienNotifCount() }}</div>
+          </nz-badge>
+        </li>
+
+        <li nz-menu-item *ngIf="item.action" (click)="item.action()">
+          <span nz-icon [nzType]="item.icon" class="mr-2"></span>
+          <span class="nav-label">{{ item.label }}</span>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+
+</nz-sider>
+
+
+  <!-- CONTENT -->
+  <nz-layout>
+    <nz-content style="margin: 16px;">
+      <router-outlet></router-outlet>
+    </nz-content>
+    <nz-footer>© 2025 Skander - Tous droits réservés.</nz-footer>
+  </nz-layout>
+</nz-layout>
+
+

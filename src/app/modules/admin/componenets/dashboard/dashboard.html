@@ -1,0 +1,94 @@
+<div class="dashboard-container">
+
+
+  <!-- Statistiques Cards -->
+<div class="dashboard-grid">
+    
+  <nz-card nzTitle="Total Clients" class="card-bg-clients">
+    <p>{{ stats.totalClients }}</p>
+  </nz-card>
+
+  <nz-card nzTitle="Total Demandes" class="card-bg-total">
+    <p >{{ stats.totalDemandes }}</p>
+  </nz-card>
+
+  <nz-card nzTitle="Demandes en attente" class="card-bg-attente">
+    <p style="color: #f97316;">{{ stats.demandesEnAttente }}</p>
+  </nz-card>
+
+    <nz-card nzTitle="Demandes Acceptees" class="card-bg-clients">
+    <p style="color: #30f916;">{{ stats.demandeAcceptees }}</p>
+  </nz-card>
+  
+  <nz-card nzTitle="Total Interventions" class="card-bg-total">
+    <p>{{ stats.totalInterventions }}</p>
+  </nz-card>
+
+
+
+</div>
+
+
+
+    
+  <div class="chart-row">
+  <!-- Table Recent Requests -->
+  <nz-card nzTitle="Demandes récentes" class="table-card table-half">
+    <div style="overflow-x: auto;">
+      <nz-table
+      #nzTable
+        [nzData]="dernieresDemandes"
+          [nzPageSize]="3"
+        [nzScroll]="{ x: '600px' }"
+        [nzBordered]="true"
+        [nzShowPagination]="false">
+        <thead>
+         <tr>
+         <th>Client</th>
+         <th>Code Instrument</th>
+         <th>Nom Instrument </th>
+         <th>Étalonnage</th>
+          <th>Date Demande</th>
+         <th>Date souhaitée</th>
+          </tr>
+        </thead>
+        <tbody>
+
+@for (d of lastdemandes; track d.id) {
+    <tr>
+      
+      <td>{{ d.client.fullName }}</td>
+
+        <td>{{ d.instrument.codeInstrument }}</td>
+
+      <td>{{ d.instrument.nomInstrument }}</td>
+
+      <td>{{ d.typeEtalonnage }}</td>
+       <td>{{ d.dateDemande | date: 'shortDate' }}</td>
+      <td>{{ d.dateSouhaitee | date: 'shortDate' }}</td>
+          </tr>
+                  }
+        </tbody>
+      </nz-table>
+    </div>
+  </nz-card>
+
+  <!-- Chart -->
+  <nz-card class="chart-box chart-half" nzTitle="Interventions par mois">
+    <ngx-charts-line-chart
+      [view]="[480, 300]"
+      [scheme]="colorScheme"
+      [results]="interventionsChartData"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="false"
+      [autoScale]="true"
+      [animations]="true">
+    </ngx-charts-line-chart>
+  </nz-card>
+</div>
+
+  
+
+
+</div>

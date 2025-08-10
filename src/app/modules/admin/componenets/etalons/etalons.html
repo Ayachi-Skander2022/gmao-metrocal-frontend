@@ -1,0 +1,221 @@
+<!-- MODAL - Titre -->
+<ng-template #modalTitleTemplate>
+  <div class="modal-title-custom">
+    <i nz-icon nzType="plus-circle" class="icon-title"></i>
+    Ajouter un Étalon
+  </div>
+</ng-template>
+
+
+<ng-template #modalContentTemplate>
+  <form [formGroup]="etalonForm" nz-form class="modern-form" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+
+    <!-- Nom -->
+    <nz-form-item class="form-item">
+      <nz-form-control nzErrorTip="Veuillez saisir le nom de l'étalon">
+        <nz-input-group nzPrefixIcon="tool">
+          <input nz-input formControlName="nom" placeholder="Nom de l'étalon" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- Référence -->
+    <nz-form-item class="form-item">
+      <nz-form-control nzErrorTip="Veuillez saisir la référence">
+        <nz-input-group nzPrefixIcon="number">
+          <input nz-input formControlName="reference" placeholder="Référence" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item class="form-item-image">
+  <nz-form-control [nzSpan]="18">
+    <input
+      type="file"
+      (change)="onFileChange($event)"
+      accept="image/*"
+      class="image-input"
+      id="image-upload"
+    />
+    
+    <label for="image-upload" class="upload-label">
+      <i nz-icon nzType="upload" nzTheme="outline"></i>
+      <span>Choisir une image</span>
+    </label>
+
+    <div *ngIf="etalonForm.value.image" class="image-preview">
+      <img [src]="formatImage(etalonForm.value.image)" alt="Preview image" />
+    </div>
+  </nz-form-control>
+</nz-form-item>
+
+
+   <nz-form-item class="form-item-etat">
+  <nz-form-control [nzSpan]="18" [nzErrorTip]="'Veuillez sélectionner l\'état'">
+
+    <nz-select
+      id="etat"
+      formControlName="etat"
+      nzPlaceHolder="Sélectionnez l'état"
+      nzAllowClear
+      nzShowSearch
+      class="custom-select-etat"
+    >
+      @for (type of etats; track type) {
+        <nz-option [nzValue]="type" [nzLabel]="type"></nz-option>
+      }
+    </nz-select>
+
+  </nz-form-control>
+</nz-form-item>
+
+
+    <!-- Boutons -->
+    <div style="text-align: right; margin-top: 16px;">
+      <button
+        nz-button
+        nzType="default"
+        nzShape="round"
+        class="cancel-button"
+        (click)="modalRef?.close()">
+        <i nz-icon nzType="close"></i>
+        Annuler
+      </button>
+
+      <button
+        nz-button
+        nzType="primary"
+        nzShape="round"
+        class="modern-button"
+        htmlType="submit"
+        [disabled]="etalonForm.invalid"
+        
+        style="margin-left: 8px;">
+        <i nz-icon nzType="plus-circle" style="margin-right: 6px;"></i>
+        Ajouter
+      </button>
+    </div>
+
+
+  </form>
+</ng-template>
+
+<!-- TITRE -->
+<div style="border-bottom: 2px solid #0a1c42; padding-bottom: 6px; margin-bottom: 16px;">
+  <h2 style="margin-top: 1rem; font-size: 20px; font-weight: 600; color: #0a1c42; display: flex; text-transform: uppercase; align-items: center; gap: 20px;">
+    <i nz-icon nzType="container" nzTheme="outline"></i>
+    Liste des Étalons
+  </h2>
+</div>
+
+<!-- BOUTON AJOUT -->
+<button class="modern-button mb-3" nz-button nzType="primary" nzShape="round" (click)="openModal()">
+  Ajouter un Étalon
+  <i nz-icon nzType="send" nzTheme="outline" style="margin-left: 8px;"></i>
+</button>
+
+<br>
+<!-- RECHERCHE -->
+<nz-input-group [nzSuffix]="suffixIcon" nzSearch class="modern-search">
+  <input
+    type="text"
+    nz-input
+    placeholder="🔍 Rechercher un instrument..."
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearch()"
+    class="search-input"
+  />
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+</nz-input-group>
+
+<br /><br />
+
+<!-- TABLE -->
+ <nz-table
+    #nzTable
+    [nzData]="filteredEtalon"
+    [nzPageSize]="5"
+    [nzFrontPagination]="true"
+    [nzLoading]="loading"
+    [nzShowPagination]="true"
+    [nzShowSizeChanger]="true"
+    [nzShowQuickJumper]="true"
+    [nzScroll]="{ x: '1000px' }"
+    [nzBordered]="true"
+    [nzSize]="'middle'"
+    class="modern-table animate__animated animate__fadeIn"
+  >
+    <thead>
+      <tr>
+        <th>Code Étalon</th>
+        <th>Image</th>
+        <th>Nom</th>
+        <th>Référence</th>
+        <th>État</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+     
+    
+      @for (e of nzTable.data; track e.id) {
+  <tr>
+    <td>{{ e.code }}</td>
+
+
+    <!-- In your table -->
+<td class="image-cell">
+  <div *ngIf="e.image; else noImage" class="image-wrapper">
+    <img [src]="formatImage(e.image)" alt="Image étalon" />
+  </div>
+  <ng-template #noImage>
+    <div class="placeholder">
+      <i nz-icon nzType="picture" nzTheme="outline"></i>
+    </div>
+  </ng-template>
+</td>
+
+
+
+    <td>{{ e.nom }}</td>
+    <td>{{ e.reference }}</td>
+    <td>
+      <nz-tag [nzColor]="e.etat === 'EN_MARCHE' ? 'green' : 'red'">
+        {{ e.etat === 'EN_MARCHE' ? 'En marche' : 'Hors service' }}
+      </nz-tag>
+    </td>
+    <td>
+      <div class="flex space-x-2">
+        <button
+        (click)="openModal()"
+          nz-button
+          nzType="default"
+          nzSize="small"
+          nz-tooltip="Modifier"
+          (click)="edit(e)"
+        >
+          <i nz-icon nzType="edit"></i>
+        </button>
+
+        <button
+          nz-button
+          nzType="default"
+          nzDanger
+          nzSize="small"
+          nz-tooltip="Supprimer"
+          (click)="delete(e.id)"
+        >
+          <i nz-icon nzType="delete"></i>
+        </button>
+      </div>
+    </td>
+  </tr>
+}
+
+
+
+    </tbody>
+  </nz-table>

@@ -1,0 +1,90 @@
+
+
+
+<div style="border-bottom: 2px solid #0a1c42; padding-bottom: 6px; margin-bottom: 16px;">
+  <h2 style="margin-top: 1rem; font-size: 20px; font-weight: 600; color: #0a1c42; display: flex; text-transform: uppercase; align-items: center; gap: 20px;">
+    <i nz-icon nzType="container" nzTheme="outline"></i>
+    Liste des Instruments
+  </h2>
+</div>
+
+
+
+
+<nz-input-group [nzSuffix]="suffixIcon" nzSearch class="modern-search">
+  <input
+    type="text"
+    nz-input
+    placeholder="🔍 Rechercher un instrument..."
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearch()"
+    class="search-input"
+  />
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+</nz-input-group>
+
+
+
+<br /><br />
+
+<div class="table-wrapper">
+
+  <nz-table clas table-wrapper
+  #nzTable
+  [nzData]="filteredInstruments"
+  [nzPageSize]="5"
+  [nzBordered]="true"
+  [nzFrontPagination]="true"
+  [nzLoading]="loading"
+  [nzShowPagination]="true"
+  [nzShowSizeChanger]="true"
+  [nzShowQuickJumper]="true"
+  [nzScroll]="{ x: '1000px' }"
+  class="modern-table"
+>
+  <thead>
+    <tr>
+      <th>Code Instrument</th>
+      <th>Instrument</th>
+      <th>Référence</th>
+      <th>Constructeur</th>
+      <th>Type Mesure</th>
+       <th>Mesure (Min | Max)</th>
+        <th>Client</th>
+      <th>Statut Etalonnage</th>
+    </tr>
+  </thead>
+
+  <tbody>
+      
+      @for (i of nzTable.data; track i.id){
+
+        <tr >
+      <td>{{ i.codeInstrument }}</td>
+      <td>{{ i.nomInstrument }}</td>
+      <td>{{ i.referenceInstrument }}</td>
+      <td>{{ i.constructeur }}</td>
+    <td>{{ i.typeMesure }} - {{ i.uniteMesure }}</td>
+    <td>{{ i.minMesure }} | {{ i.maxMesure }}</td>
+    <td>{{i.client.fullName}}</td>
+ 
+     <!-- État Étalonnage -->
+      <td>
+             <nz-tag  nzColor="processing">
+            <span nz-icon nzType="sync" nzSpin></span> En attente
+          </nz-tag>
+     
+      </td>
+
+
+    </tr>
+
+      }
+    
+  </tbody>
+</nz-table>
+</div>
+
+

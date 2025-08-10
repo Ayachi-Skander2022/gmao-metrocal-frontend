@@ -1,0 +1,176 @@
+<div style="border-bottom: 2px solid #0a1c42; padding-bottom: 6px; margin-bottom: 16px;">
+  <h2 style=" font-size: 20px; font-weight: 600; color: #0a1c42; display: flex; text-transform: uppercase; align-items: center; gap: 20px;">
+    <i nz-icon nzType="container" nzTheme="outline"></i>
+    Liste des demandes d'étalonnage
+  </h2>
+</div>
+
+<nz-input-group [nzSuffix]="suffixIcon" nzSearch class="modern-search">
+  <input
+    type="text"
+    nz-input
+    placeholder="🔍 Rechercher un instrument..."
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearch()"
+    class="search-input"
+  />
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+</nz-input-group>
+<br><br>
+
+<nz-table
+ #nzTable
+  [nzData]="filteredDemandes"
+  [nzPageSize]="5"
+  [nzFrontPagination]="true"
+  [nzBordered]="true"
+  [nzLoading]="loading"
+  [nzShowSizeChanger]="true"
+  [nzShowQuickJumper]="true"
+  [nzScroll]="{ x: '1500px' }"
+  class="modern-table"
+>
+  <thead>
+    <tr>
+      <th>Client</th>
+      <th>Code Instrument</th>
+       <th>Nom Instrument</th>
+      <th>Réf.</th>
+      <th>Type Mesure</th>
+      <th>Étalonnage</th>
+      <th>Date souhaitée</th>
+      <th>Date Demande</th>
+      <th>État Étalonnage</th>
+      <th>État Demande</th>
+      <th>Actions</th>
+      <th>Affecter à</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  @for (d of nzTable.data; track d.id) {
+    <tr>
+      <td>
+        <strong>{{ d?.client?.fullName }}</strong>
+        <div class="user-inline">
+          <span>{{ d.client?.adresse }}</span>
+          <span>{{ d.client?.telephone }}</span>
+        </div>
+      </td>
+
+      <td>{{ d.instrument?.codeInstrument }}</td>
+      <td>{{ d?.instrument?.nomInstrument }}</td>
+      <td>{{ d.instrument?.referenceInstrument }}</td>
+      <td>{{ d.instrument?.typeMesure }} - {{ d.instrument?.uniteMesure }}</td>
+      <td>{{ d.typeEtalonnage }}</td>
+      <td>{{ d.dateSouhaitee | date: 'shortDate' }}</td>
+      <td>{{ d.dateDemande | date: 'shortDate' }}</td>
+
+      <!-- État Étalonnage -->
+      <td>
+        @if (d.statutDemande !== 'REJECTED') {
+          @if (d.statutEtalonnage === 'EN_ATTENTE') {
+            <nz-tag nzColor="processing">
+              <span nz-icon nzType="sync" nzSpin></span> En attente
+            </nz-tag>
+          }
+          @if (d.statutEtalonnage === 'EN_COURS') {
+            <nz-tag nzColor="blue">
+              <span nz-icon nzType="loading" nzSpin></span> En cours
+            </nz-tag>
+          }
+          @if (d.statutEtalonnage === 'ETALONNE') {
+            <nz-tag nzColor="success">
+              <span nz-icon nzType="check-circle"></span> Terminé
+            </nz-tag>
+          }
+        }
+        @if (d.statutDemande === 'REJECTED') {
+          <span style="color: #999; font-style: italic;">Demande rejetée</span>
+        }
+      </td>
+
+      <!-- État Demande -->
+      <td>
+        @if (d.statutDemande === 'PENDING') {
+          <nz-tag nzColor="processing">
+            <span nz-icon nzType="sync" nzSpin></span> En attente
+          </nz-tag>
+        }
+        @if (d.statutDemande === 'APPROVED') {
+          <nz-tag nzColor="green">
+            <span nz-icon nzType="check-circle"></span> Approuvée
+          </nz-tag>
+        }
+        @if (d.statutDemande === 'REJECTED') {
+          <nz-tag nzColor="error">
+            <span nz-icon nzType="close-circle"></span> Rejetée
+          </nz-tag>
+        }
+      </td>
+
+      <!-- Actions -->
+      <td>
+        @switch (d.statutDemande) {
+          @case ('PENDING') {
+            <div class="action-icons">
+              <span
+                nz-icon
+                nzType="check-circle"
+                nzTheme="twotone"
+                [nzTwotoneColor]="'#52c41a'"
+                (click)="changeDemandeStatus(d.id, 'APPROVED')"
+                class="icon-action"
+              ></span>
+              <span
+                nz-icon
+                nzType="close-circle"
+                nzTheme="twotone"
+                [nzTwotoneColor]="'#FF4D4F'"
+                (click)="changeDemandeStatus(d.id, 'REJECTED')"
+                class="icon-action"
+              ></span>
+            </div>
+          }
+          @case ('APPROVED') {
+            <div style="color: #52c41a;">
+              <span nz-icon nzType="check-circle"></span> Approuvée
+            </div>
+          }
+          @case ('REJECTED') {
+            <div style="color: #f5222d;">
+              <span nz-icon nzType="close-circle"></span> Rejetée
+            </div>
+          }
+        }
+      </td>
+
+      <!-- Affectation technicien -->
+      <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        @if (d.statutDemande === 'APPROVED') {
+          <nz-select
+            [(ngModel)]="d.selectedTechnicienId"
+            (ngModelChange)="affecterTechnicien(d.id, $event)"
+            [nzDisabled]="d.statutAffectation === 'Affecté' || d.statutEtalonnage === 'ETALONNE'"
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Sélectionner un technicien"
+            nzSize="small"
+            style="max-width: 350px; width: 100%"
+          >
+            @for (tech of techniciens; track tech.id) {
+              <nz-option
+                [nzValue]="tech.id"
+                [nzLabel]="tech.fullName"
+              ></nz-option>
+            }
+          </nz-select>
+        }
+      </td>
+    </tr>
+  }
+</tbody>
+
+</nz-table>

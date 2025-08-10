@@ -1,0 +1,77 @@
+
+
+
+<div style="border-bottom: 2px solid #0a1c42; padding-bottom: 6px; margin-bottom: 16px;">
+  <h2 style="margin-top: 1rem; font-size: 20px; font-weight: 600; color: #0a1c42; display: flex; text-transform: uppercase; align-items: center; gap: 20px;">
+    <i nz-icon nzType="container" nzTheme="outline"></i>
+    Liste des Clients
+  </h2>
+</div>
+
+
+
+
+
+<!-- Barre de recherche -->
+<nz-input-group [nzSuffix]="suffixIcon" nzSearch class="modern-search">
+  <input
+    type="text"
+    nz-input
+    placeholder="🔍 Rechercher un instrument..."
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearch()"
+    class="search-input"
+  />
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+</nz-input-group>
+
+<br /><br />
+
+
+<nz-table
+  #nzTable
+  [nzData]="filteredClients"
+  [nzPageSize]="5"
+  [nzBordered]="true"
+  [nzFrontPagination]="true"
+  [nzLoading]="loading"
+  [nzShowPagination]="true"
+  [nzShowSizeChanger]="true"
+  [nzShowQuickJumper]="true"
+  [nzScroll]="{ x: '1000px' }"
+  class="modern-table"
+>
+  <thead>
+    <tr>
+      <th>Nom Entreprise</th>
+      <th>Adresse</th>
+      <th>Email</th>
+      <th>Numéro de Telephone</th>
+     
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let c of nzTable.data">
+      <td>{{ c.fullName }}</td>
+      <td>{{ c.adresse }}</td>
+      <td>{{ c.email }}</td>
+      <td>{{ c.telephone }}</td>
+
+ 
+     <!-- État Étalonnage -->
+      <td>
+             <nz-tag  nzColor="processing">
+            <span nz-icon nzType="sync" nzSpin></span> En attente
+          </nz-tag>
+     
+      </td>
+
+    
+
+    </tr>
+  </tbody>
+</nz-table>
