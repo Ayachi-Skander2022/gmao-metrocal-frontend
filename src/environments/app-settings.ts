@@ -1,3 +1,3 @@
 export const appSettings = {
-  apiUrl: 'https://metrocal-app-production.up.railway.app/api'
+  apiUrl: 'https://gmao-metrocal-back-production-ade4.up.railway.app'
 };
